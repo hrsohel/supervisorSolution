@@ -1,0 +1,166 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat&family=Roboto&family=Source+Serif+Pro&display=swap");
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+@layer {
+  .mx {
+    @apply mx-auto;
+  }
+}
+@layer {
+  .active {
+    @apply bg-hoveSideBac text-hovSideText;
+  }
+}
+a {
+  width: 100%;
+  height: 100% !important;
+}
+
+.search-btn {
+  background-image: url("../public/master admin/icon/3844432_magnifier_search_zoom_icon.png");
+  background-position: center;
+  background-size: cover;
+}
+.logo {
+  width: 15rem !important;
+  height: 4rem !important;
+}
+.user {
+  width: 5rem !important;
+  height: 2rem !important;
+}
+
+.category form {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50% -50%);
+  box-shadow: 0 0 0.5rem black;
+}
+.Category {
+  height: 115vh;
+}
+.Category li a {
+  margin-left: 0.5rem;
+}
+.instructor a {
+  margin: 0 0.5rem;
+}
+.ise {
+  background: linear-gradient(to bottom, white, rgb(120, 187, 253));
+}
+.userMenu {
+  background: #1f4690;
+}
+.userMenu ul li a {
+  margin-left: 0.5rem;
+}
+.header {
+  background: url("..//public/User profile/292982759_988887001808470_1252588350587099212_n.png");
+  background-repeat: no-repeat;
+  background-position: right;
+}
+
+.helping {
+  background-image: url(../public/images/sidebanner.png);
+  background-repeat: no-repeat;
+  /* background-size: cover; */
+  background-position: top right;
+}
+.background {
+  background: url(../public/images/GroupBack.png);
+  background-position: center;
+  background-size: cover;
+}
+.linebg {
+  background: url(../public/images/lineBg.png);
+  background-position: center;
+  background-size: cover;
+}
+.curlButton {
+  padding: 0.3rem 0.5rem;
+  color: white;
+  background-color: dodgerblue;
+  border-radius: 1rem 0;
+}
+hover:curlbutton {
+  background-color: blue;
+}
+.polygon {
+  background: url(../public/images/polygonBg.png);
+  background-position: center center;
+  background-size: cover;
+}
+@media (max-width: 768px) {
+  .posImage {
+    position: absolute;
+    top: 0rem;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+/* Montserrat */
+
+.dot {
+  background-image: url(../public/images/dotImg.png);
+  background-size: cover;
+  background-position: center;
+}
+/* animation start code-----*/
+.boxBody {
+  margin: 0;
+  padding: 0;
+  background: #000;
+}
+.spanBox {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.bodySpan {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-bottom: 1px solid #fff;
+  border-right: 1px solid #fff;
+  transform: rotate(45deg);
+  animation: animate 2s infinite;
+}
+
+.bodySpan1 {
+  animation-delay: 0.2s;
+  transform: rotate(45deg) translate(-20px, -20px);
+}
+.bodySpan2 {
+  animation-delay: 0.4s;
+  transform: rotate(45deg) translate(-20px, -20px);
+}
+
+@keyframes animate {
+  0% {
+    opacity: 0;
+    transform: rotate(45deg) translate(-20px, -20px);
+  }
+  50% {
+    opacity: 0;
+  }
+  0% {
+    opacity: 0;
+    transform: rotate(45deg) translate(-20px, -20px);
+  }
+}
+/* animation end code-----*/

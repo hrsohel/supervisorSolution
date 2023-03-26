@@ -1,0 +1,93 @@
+import axios from 'axios';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import React from 'react';
+import useSWR from 'swr';
+import NavbarForAll from '../components/NavbarForAll';
+
+const fetcher = async () => {
+    const {data} = await axios.get("/api/cart")
+    return data
+}
+
+const fetcher2 = async() => {
+    const {data} = await axios.get("/api/getComMem")
+    return data
+}
+
+const checkout2 = () => {
+    const {data} = useSWR("/api/cart", fetcher)
+    const response = useSWR("/api/getComMem", fetcher2)
+    const memebers = response.data?.message.length && response.data?.message[0].emails.split(",").length
+    let originalPrice = data?.message.reduce((total, info) => {
+        return total + info.cprice * info.total
+    }, 0)
+    var discount = 0
+    var courseLength = data?.message.length
+    if(data?.companyToken) {
+        courseLength = data?.message.reduce((total, info) => {
+            return total + info.total
+        }, 0)
+    }
+    if(courseLength >= 5 && courseLength < 10) discount = 16 / 100
+    else if(courseLength >= 10 && courseLength < 25) discount = 36 / 100
+    else if(courseLength >= 25 && courseLength < 50) discount = 44 / 100
+    else if (courseLength >= 50) discount = 50 / 100
+    let totalPrice = originalPrice - originalPrice * discount
+    let dueCourse = response.data?.message.length > 0 ? data?.message.filter(info => info.total < memebers).length : 0
+    return (
+        <>
+            <NavbarForAll />
+            <div className='container pt-28 mx-auto flex items-start justify-around p-4 flex-col md:flex-row'>
+                <div className='px-4 w-full md:w-1/2'>
+                    <h1 className='text-4xl font-bold my-4'>Checkout</h1>
+                    <h3 className='text-2xl font-semibold my-4'>Payment Method</h3>
+                    <div className='px-2 py-1 border text-lg font-semibold'>
+                        <input type="radio" name="checkout" id="radio1" value="stripe" /><label htmlFor='radio1' className='ml-2'>Stripe</label>
+                    </div>
+                    <div className='px-2 py-1 border text-lg font-semibold'>
+                        <input type="radio" name="checkout" id="radio2" value="paypal" /><label htmlFor='radio2' className='ml-2'>Paypal</label>
+                    </div>
+                    <h3 className='text-2xl font-semibold my-4'>Order</h3>
+                </div>
+                <div className='px-4 w-full md:w-1/2'>
+                    <h1 className='text-2xl font-semibold my-4'>Summary</h1>
+                    <div className='flex items-center justify-between text-lg'>
+                        <h3 className=''>Original Price:</h3>
+                        <h3 className=''>$
+                            {originalPrice}
+                        </h3>
+                    </div>
+                    <div className='flex pb-4 border-b-2 items-center justify-between text-lg'>
+                        <h3 className=''>Discounts:</h3>
+                        <h3 className=''>{discount * 100}%</h3>
+                    </div>
+                    <div className='my-4 flex items-center justify-between text-lg font-bold'>
+                        <h3>Total:</h3>
+                        <p>${Math.floor(totalPrice)} <span className='text-gray-400 line-through ml-4'>${Math.floor(originalPrice * discount)}</span></p>
+                    </div>
+                    <p className='text-gray-500 mb-4'>By completing your purchase you agree to these Terms of Service.</p>
+                    {
+                        data?.message.length ? <button className='bg-blue-700 text-2xl font-semibold p-4 text-center text-white w-full' disabled={dueCourse > 0 && data?.companyToken || !response.data?.message.length && data?.companyToken}>
+                            Proceed
+                        </button>
+                         : <button className='bg-blue-700 text-2xl font-semibold p-4 text-center text-white w-full'>
+                             <Link href={`/coursesPages`}>You don't have any cart</Link>
+                         </button>
+                    }
+                </div>
+            </div>
+            {
+                dueCourse > 0 && data?.companyToken ? <>
+                <div className='container mx-auto bg-red-300 text-red-600 font-semibold text-lg py-2 text-center'>
+                    You have {dueCourse} courses less than you memebers. Please add more courses for your company memebers
+                </div> 
+                </> : !response.data?.message.length && data?.companyToken ? <div className='container mx-auto bg-red-300 text-red-600 font-semibold text-lg py-2 text-center'>
+                    You have no members in your company. Please add memebers in your company
+                </div>  : <></>
+            }
+        </>
+    );
+};
+
+export default checkout2;
